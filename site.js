@@ -17,7 +17,7 @@
     const u = new URL(a.href, location.href);
     if (u.origin === location.origin && /\.html$|\/$/.test(u.pathname)) { u.searchParams.set('ref', source); a.href = u.href; }
   });
-  const events = new Set(['pageview','video_play','brief_open','blueprint_open','captaincast_open','founder_open','contact_view']);
+  const events = new Set(['pageview','video_play','brief_open','blueprint_open','captaincast_open','founder_open','contact_view','experience_interaction']);
   function track(event) {
     if (!api || signal || optedOut || !events.has(event)) return;
     const body = JSON.stringify({event, page, source, lang});
@@ -36,6 +36,7 @@
     else if (/\/CaptainCast\/liveliva\/?/.test(url.pathname)) track('captaincast_open');
     else if (/\/cv\/?$/.test(url.pathname)) track('founder_open');
   });
+  document.addEventListener('liva:experience', () => track('experience_interaction'), {once:true});
   const contact = document.getElementById('connect');
   if (contact && 'IntersectionObserver' in window) {
     const observer = new IntersectionObserver(entries => {
